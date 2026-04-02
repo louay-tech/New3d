@@ -3,42 +3,41 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
-    #loading {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #000; color: white;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      font-size: 24px; z-index: 9999;
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #btn {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 40px; font-size: 24px;
+      background: #ff6600; color: white;
+      border: none; border-radius: 15px;
+      z-index: 9999;
     }
   </style>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image.prod.js"></script>
 </head>
 <body>
-  <div id="loading">
-    <p>🍕</p>
-    <p>جاري التحميل...</p>
-    <p style="font-size:14px">اسمح بالكاميرا عند الطلب</p>
+  <button id="btn" onclick="startAR()">🍕 ابدأ AR</button>
+  <div id="container" style="width:100%;height:100%;display:none;">
+    <a-scene mindar-image="imageTargetSrc: targets.mind;"
+             color-space="sRGB"
+             embedded
+             vr-mode-ui="enabled: false"
+             id="scene">
+      <a-assets>
+        <a-asset-item id="model" src="pizza.glb"></a-asset-item>
+      </a-assets>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model src="#model" scale="0.5 0.5 0.5" position="0 0 0"></a-gltf-model>
+      </a-entity>
+    </a-scene>
   </div>
-  <a-scene mindar-image="imageTargetSrc: targets.mind;"
-           color-space="sRGB"
-           embedded
-           vr-mode-ui="enabled: false"
-           device-orientation-permission-ui="enabled: true">
-    <a-assets>
-      <a-asset-item id="model" src="pizza.glb"></a-asset-item>
-    </a-assets>
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-gltf-model src="#model" scale="0.5 0.5 0.5" position="0 0 0"></a-gltf-model>
-    </a-entity>
-  </a-scene>
   <script>
-    document.querySelector('a-scene').addEventListener('arReady', function() {
-      document.getElementById('loading').style.display = 'none';
-    });
+    function startAR() {
+      document.getElementById('btn').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
+    }
   </script>
 </body>
 </html>
